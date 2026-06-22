@@ -1,24 +1,62 @@
+# ====================
 # Python
+# ====================
+
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
 
 venv/
+env/
+
 .env
 
 
-# Node
+# ====================
+# Node / React
+# ====================
+
 node_modules/
 dist/
+build/
 
 
+# ====================
 # VS Code
+# ====================
+
 .vscode/
 
 
-# ML Cache
+# ====================
+# AI / ML Cache
+# ====================
+
 .cache/
 *.pkl
+*.joblib
+
+models/cache/
+
+*.bin
 
 
+# HuggingFace
+.huggingface/
+sentence_transformers/
+
+
+# ====================
+# Logs
+# ====================
+
+*.log
+
+
+# ====================
 # OS
+# ====================
+
 .DS_Store
+Thumbs.db

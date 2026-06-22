@@ -1,4 +1,4 @@
-import google.generativeai as genai
+from google import genai
 import os
 import json
 from dotenv import load_dotenv
@@ -7,25 +7,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-genai.configure(
+client = genai.Client(
     api_key=os.getenv("GEMINI_API_KEY")
-)
-
-
-model = genai.GenerativeModel(
-    "gemini-pro"
 )
 
 
 def analyze_job(job):
 
-    prompt = f"""
+    prompt=f"""
 
 You are an expert AI recruiter.
 
 Analyze:
 
 {job}
+
 
 Return JSON:
 
@@ -39,6 +35,13 @@ Return JSON:
 
 """
 
-    response = model.generate_content(prompt)
 
-    return json.loads(response.text)
+    response = client.models.generate_content(
+        model="gemini-2.5-flash",
+        contents=prompt
+    )
+
+
+    return json.loads(
+        response.text
+    )
