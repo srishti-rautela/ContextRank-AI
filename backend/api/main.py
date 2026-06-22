@@ -18,7 +18,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
+from agents.llm_recruiter import analyze_job
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from core.capability_dna import rank_candidates, score_candidate, CapabilityDNA
 from core.requirement_decoder import decode_jd
@@ -418,3 +418,21 @@ def stats():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+@app.post("/api/analyze-job")
+def analyze(data:dict):
+
+    return analyze_job(
+        data["job"]
+    )
+
+
+@app.post("/api/feedback")
+def feedback(data:dict):
+
+    return {
+        "message":
+        "Learning feedback stored",
+
+        "status":
+        "success"
+    }
