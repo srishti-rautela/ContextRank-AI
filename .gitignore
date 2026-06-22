@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+
+venv/
+.env
+
+
+# Node
+node_modules/
+dist/
+
+
+# VS Code
+.vscode/
+
+
+# ML Cache
+.cache/
+*.pkl
+
+
+# OS
+.DS_Store
