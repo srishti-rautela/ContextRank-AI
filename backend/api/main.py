@@ -27,6 +27,8 @@ from ml.learning_ranker import LearningRanker
 from intelligence.bias_engine import analyze_bias
 
 from intelligence.evaluation_engine import get_metrics
+from integrations.github_analyzer import analyze_github
+from database.feedback_db import save_feedback, load_feedback
 app = FastAPI(
     title="ContextRank API",
     description="Intelligent Candidate Discovery & Ranking Engine",
@@ -42,7 +44,13 @@ app.add_middleware(
 # XGBoost Feedback Learning Engine
 ranker_ai = LearningRanker()
 
-feedback_memory = []
+feedback_memory = load_feedback()
+
+if len(feedback_memory) > 0:
+
+    ranker_ai.train(
+        feedback_memory
+    )
 
 # ── Load data once at startup ─────────────────────────────────────────────
 DATA_DIR = Path(__file__).parent.parent.parent / "data" / "raw"
@@ -428,32 +436,60 @@ def analyze(data:dict):
         data["job"]
     )
 
-
 @app.post("/api/feedback")
-
 def feedback(data:dict):
 
+
+    # Save permanently
+
+    save_feedback(data)
+
+
+
+    # Update runtime memory
 
     feedback_memory.append(data)
 
 
+
+    # Retrain model
+
     ranker_ai.train(
+
         feedback_memory
+
     )
+
 
 
     return {
 
+
         "message":
-        "AI learned recruiter preference",
+
+        "AI learned recruiter preference permanently",
+
 
         "training_samples":
+
         len(feedback_memory),
 
+
+
+        "storage":
+
+        "SQLite Recruiter Memory",
+
+
+
         "model":
+
         "XGBoost Ranker",
 
+
+
         "status":
+
         "updated"
 
     }
@@ -470,6 +506,13 @@ def evaluation():
 
 
     return get_metrics()
+@app.get("/api/github/{username}")
+def github_signal(username:str):
+
+
+    return analyze_github(
+        username
+    )
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

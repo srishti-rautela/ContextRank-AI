@@ -594,7 +594,7 @@ color:"#94a3b8"
 
 >
 
-Built for Data & AI Challenge 🏆 |
+Built for Data & AI Challenge by India.Runs with Redrob AI🏆 |
 ContextRank AI Recruiting Engine 🇮🇳
 
 
