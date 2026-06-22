@@ -24,6 +24,9 @@ from core.capability_dna import rank_candidates, score_candidate, CapabilityDNA
 from core.requirement_decoder import decode_jd
 from core.semantic_engine import get_embedding_mode
 from ml.learning_ranker import LearningRanker
+from intelligence.bias_engine import analyze_bias
+
+from intelligence.evaluation_engine import get_metrics
 app = FastAPI(
     title="ContextRank API",
     description="Intelligent Candidate Discovery & Ranking Engine",
@@ -454,7 +457,19 @@ def feedback(data:dict):
         "updated"
 
     }
+@app.get("/api/bias-report")
+def bias_report():
 
+
+    return analyze_bias()
+
+
+
+@app.get("/api/evaluation")
+def evaluation():
+
+
+    return get_metrics()
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

@@ -12,7 +12,9 @@ import ComparePage from "./pages/ComparePage.jsx";
 import AIRecruiterBrain from "./components/AIRecruiterBrain";
 import VectorMemory from "./components/VectorMemory";
 import LearningRanker from "./components/LearningRanker";
+import BiasDashboard from "./components/BiasDashboard";
 
+import EvaluationMetrics from "./components/EvaluationMetrics";
 
 const TABS=[
  {id:"rank",label:"🏆 Ranking"},
@@ -511,6 +513,12 @@ onClear={()=>setSelected([])}
 
 
 <LearningRanker/>
+
+
+<BiasDashboard/>
+
+
+<EvaluationMetrics/>
 
 
 </div>
