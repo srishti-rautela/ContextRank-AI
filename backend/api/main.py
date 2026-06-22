@@ -23,7 +23,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from core.capability_dna import rank_candidates, score_candidate, CapabilityDNA
 from core.requirement_decoder import decode_jd
 from core.semantic_engine import get_embedding_mode
-
+from ml.learning_ranker import LearningRanker
 app = FastAPI(
     title="ContextRank API",
     description="Intelligent Candidate Discovery & Ranking Engine",
@@ -36,6 +36,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# XGBoost Feedback Learning Engine
+ranker_ai = LearningRanker()
+
+feedback_memory = []
 
 # ── Load data once at startup ─────────────────────────────────────────────
 DATA_DIR = Path(__file__).parent.parent.parent / "data" / "raw"
@@ -414,10 +418,6 @@ def stats():
         "top_skills": [{"skill": s, "count": n} for s, n in top_skills],
     }
 
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
 @app.post("/api/analyze-job")
 def analyze(data:dict):
 
@@ -427,12 +427,34 @@ def analyze(data:dict):
 
 
 @app.post("/api/feedback")
+
 def feedback(data:dict):
 
+
+    feedback_memory.append(data)
+
+
+    ranker_ai.train(
+        feedback_memory
+    )
+
+
     return {
+
         "message":
-        "Learning feedback stored",
+        "AI learned recruiter preference",
+
+        "training_samples":
+        len(feedback_memory),
+
+        "model":
+        "XGBoost Ranker",
 
         "status":
-        "success"
+        "updated"
+
     }
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
