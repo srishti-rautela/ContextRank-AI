@@ -1,20 +1,18 @@
 <div align="center">
 
-# 🚀 ContextRank AI  
+# 🚀 ContextRank AI
 ## 🧠 Autonomous Candidate Discovery & Predictive Talent Intelligence Platform
 
-### Beyond Keywords. Beyond Resumes. Beyond Bias.
+### Finding the Talent Traditional Hiring Systems Miss
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&size=25&duration=2500&pause=800&center=true&width=1000&lines=AI+Recruiter+Brain+Powered+by+LLMs;Semantic+Candidate+Discovery+with+FAISS;Real+Developer+Signal+Analysis;Adaptive+Recruiter+Learning+Engine;Finding+Hidden+Talent+Humans+Miss" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&size=26&duration=2500&pause=700&center=true&width=900&lines=LLM+Powered+AI+Recruiter+Brain;100000%2B+Candidate+Semantic+Ranking;FAISS+Vector+Talent+Search;CapabilityDNA+Intelligence+Engine;Hidden+Gem+Discovery+System" />
 
-
-![AI](https://img.shields.io/badge/AI-Gemini_LLM-blue)
-![Vector](https://img.shields.io/badge/Search-FAISS-purple)
-![ML](https://img.shields.io/badge/ML-XGBoost-orange)
-![Memory](https://img.shields.io/badge/Memory-SQLite-green)
-![Signal](https://img.shields.io/badge/Signals-GitHub_API-black)
-![Backend](https://img.shields.io/badge/API-FastAPI-success)
-![Frontend](https://img.shields.io/badge/UI-React_Dashboard-cyan)
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![FastAPI](https://img.shields.io/badge/API-FastAPI-green)
+![AI](https://img.shields.io/badge/AI-Gemini_LLM-purple)
+![Vector](https://img.shields.io/badge/Search-FAISS-orange)
+![ML](https://img.shields.io/badge/ML-XGBoost-red)
+![Dataset](https://img.shields.io/badge/Dataset-100K_Candidates-success)
 
 </div>
 
@@ -23,157 +21,209 @@
 
 # 🌍 Vision
 
-Modern hiring systems should discover **capability, evidence and potential** — not only keywords.
+Recruitment should identify:
 
-Millions of skilled candidates are overlooked because existing systems depend on:
+> Capability + Evidence + Growth Potential
 
-- Exact keyword matching
-- College reputation
-- Previous company brand
-- Static resume filtering
+not only:
+
+- Keywords
+- College Tier
+- Previous Company
+- Resume Formatting
 
 
-ContextRank AI acts as an intelligent recruiter:
-
-> "Who has the strongest evidence and potential to succeed?"
-
+ContextRank AI is an autonomous AI recruiter that understands candidates like humans do.
 
 
 ---
 
-# ❌ Problem With Traditional ATS
+# 🏆 Contest Dataset Implementation
+
+This project is built and tested on the provided:
+
+```
+100,000 Candidate Dataset
+```
+
+Pipeline:
+
+```
+Raw Candidate Data
+        |
+        ↓
+Data Adapter Layer
+        |
+        ↓
+Semantic Profile Generation
+        |
+        ↓
+Vector Embeddings
+        |
+        ↓
+FAISS Talent Memory
+        |
+        ↓
+CapabilityDNA Scoring
+        |
+        ↓
+AI Ranking Engine
+        |
+        ↓
+Final Submission CSV
+```
+
+Generated outputs:
+
+```
+backend/data/processed/
+
+final_submission.csv
+submission.csv
+candidate_embeddings.npy
+```
+
+
+---
+
+# ❌ Traditional ATS Problem
 
 
 Example:
 
 
-```
-Job:
+### Job Description
 
-Need scalable AI backend engineer
+```
+Need AI Engineer with LLM recommendation systems
+```
 
 
 Candidate:
 
-Built FastAPI ML pipelines with vector search
+```
+Built vector search recommendation engine
+using FastAPI + ML pipelines
+```
 
 
 ATS:
 
-❌ Weak match
+```
+Low Match ❌
+(no exact keyword overlap)
+```
 
 
-ContextRank AI:
+ContextRank:
 
-✅ Understands semantic capability
+```
+Strong Match ✅
+
+Understands:
+Vector Search ≈ Recommendation
+ML Pipeline ≈ AI Engineering
 ```
 
 
 ---
 
-# 💡 Solution Overview
+
+# 💡 Solution
 
 
 ContextRank AI combines:
 
-
-✔ LLM based job understanding  
-
-✔ Semantic candidate retrieval  
-
-✔ Developer activity intelligence  
-
-✔ Candidate capability modeling  
-
-✔ Bias-aware hidden gem discovery  
-
-✔ Adaptive ML ranking  
-
+| Intelligence | Purpose |
+|-|-|
+| Gemini Recruiter Agent | Understand job intent |
+| FAISS Vector DB | Semantic candidate search |
+| CapabilityDNA | Multi-factor candidate scoring |
+| Signal Engine | Extract real ability signals |
+| Bias Engine | Discover ignored talent |
+| Learning Ranker | Adaptive ranking |
+| AI Copilot | Explain every decision |
 
 
 ---
 
-# 🏗 System Architecture
+
+# 🏗 Complete System Architecture
 
 
 ```mermaid
-
 flowchart TD
-
 
 A[Job Description]
 
+A --> B[LLM Recruiter Agent]
 
-A --> B[Gemini LLM Recruiter Brain]
+B --> C[Requirement Decoder]
 
+C --> D[Semantic Engine]
 
-B --> C[Intent + Hidden Skill Extraction]
+D --> E[FAISS Vector Store]
 
-
-C --> D[Embedding Engine]
-
-
-D --> E[(FAISS Talent Memory)]
-
-
-E --> F[Candidate Intelligence Layer]
-
-
-Github[GitHub Developer Signals]
-
-
-Github --> F
-
+E --> F[Candidate Retrieval]
 
 F --> G[CapabilityDNA Engine]
 
 
-G --> H[Hidden Gem Detector]
+G --> H[Skill Match]
+G --> I[Project Evidence]
+G --> J[Experience Signal]
+G --> K[Learning Potential]
 
 
-G --> I[Bias Intelligence Engine]
+G --> L[Bias Intelligence]
 
+G --> M[Learning Ranker]
 
-G --> J[XGBoost Adaptive Ranker]
+M --> N[Final Ranking]
 
+N --> O[Recruiter Copilot]
 
-Feedback[Recruiter Feedback]
-
-
-Feedback --> DB[(SQLite Recruiter Memory)]
-
-
-DB --> J
-
-
-J --> K[Explainable AI Copilot]
-
-
-K --> L[Ranked Candidate Shortlist]
-
+O --> P[Explainable Decision]
 
 ```
-
 
 
 ---
 
 
-# 🧠 Gemini Recruiter Brain
+# 🧠 AI Recruiter Brain
 
 
-Understands job descriptions beyond keywords.
+Location:
+
+```
+backend/agents/
+
+llm_recruiter.py
+explanation_agent.py
+```
+
+
+Responsibilities:
+
+- Job understanding
+- Skill extraction
+- Context reasoning
+- Ranking explanation
+
+
+Example:
 
 
 Input:
 
-
 ```
-Need AI Engineer experienced with LLMs and recommendation systems
+Need backend AI engineer
+with LLM experience
 ```
 
 
-AI extracts:
+AI understands:
 
 
 ```json
@@ -182,14 +232,16 @@ AI extracts:
 
  "skills":[
  "Python",
- "Machine Learning",
- "LLM"
+ "LLM",
+ "Vector Search",
+ "ML Systems"
  ],
 
- "hidden_expectations":[
- "AI Deployment",
- "Scalable Systems",
- "Model Optimization"
+ "hidden_requirements":[
+
+ "Scalable Backend",
+ "Model Deployment"
+
  ]
 }
 ```
@@ -198,30 +250,36 @@ AI extracts:
 ---
 
 
-# 🚀 FAISS Talent Memory
+# ⚡ FAISS Talent Memory
+
+
+Location:
+
+```
+backend/vector_store/faiss_engine.py
+```
 
 
 Traditional:
 
 ```
-Keyword == Keyword
+keyword == keyword
 ```
 
 
 ContextRank:
 
-
 ```
-Meaning == Capability
+meaning == capability
 ```
 
 
-FAISS enables:
+Features:
 
-- Vector similarity search
-- Semantic matching
-- Fast candidate retrieval
-
+✔ Semantic embeddings  
+✔ Fast vector retrieval  
+✔ 100K profile indexing  
+✔ Millisecond search  
 
 
 ---
@@ -230,104 +288,44 @@ FAISS enables:
 # 🧬 CapabilityDNA Engine
 
 
-Every candidate becomes an intelligence profile:
-
+Location:
 
 ```
-Technical Skill      █████████ 94%
+backend/core/capability_dna.py
+```
 
-Project Strength    ████████ 91%
+
+Each candidate receives:
+
+```
+
+Skill Match          █████████ 95%
+
+Project Evidence    ████████ 90%
+
+Experience          ████████ 85%
 
 Learning Signal     █████████ 96%
 
-Developer Evidence  ████████ 90%
-
-Role Alignment      █████████ 95%
+Growth Potential    █████████ 94%
 
 ```
 
 
----
-
-
-# 🐙 GitHub Developer Intelligence
-
-
-ContextRank validates real developer activity:
-
+Final score:
 
 ```
-GitHub Profile
+CapabilityDNA Score
+        +
+Semantic Score
+        +
+Behavior Signals
 
         ↓
 
-Repository Analysis
-
-        ↓
-
-Language Diversity
-
-        ↓
-
-Project Strength
-
-        ↓
-
-Developer Signal Score
+Candidate Rank
 
 ```
-
-
-Example:
-
-
-```json
-{
- "repositories":7,
-
- "languages":{
-   "Python":2,
-   "JavaScript":1
- },
-
- "developer_signal_score":86
-}
-```
-
-
----
-
-
-# 📈 Adaptive Learning Ranker
-
-
-Recruiter decisions improve future ranking:
-
-
-```
-Recruiter Selection
-
-        ↓
-
-SQLite Memory
-
-        ↓
-
-XGBoost Training
-
-        ↓
-
-Better Future Ranking
-
-```
-
-
-Learns:
-
-✔ Skills importance  
-✔ Project value  
-✔ Hiring preferences  
-
 
 
 ---
@@ -336,281 +334,221 @@ Learns:
 # ⭐ Hidden Gem Discovery
 
 
-Old hiring:
-
+Location:
 
 ```
-Top College
+backend/intelligence/bias_engine.py
+```
+
+
+Finds candidates who have:
+
+
+✔ Strong skills  
+✔ Strong projects  
+✔ High learning ability  
+✔ Low traditional visibility
+
+
+Example:
+
+```
+Tier-3 College
 +
-Known Company
-
-= Preference
-```
-
-
-ContextRank:
-
-
-```
-Skills
+Strong ML Projects
 +
-Projects
-+
-Developer Evidence
-+
-Growth Signal
+High Capability Score
 
-= True Potential
+=
+
+⭐ Hidden Gem
 ```
 
+
+---
+
+# 🤖 Recruiter Copilot
+
+
+Frontend:
+
+```
+src/components/RecruiterCopilot.jsx
+```
+
+
+Answers:
+
+```
+Why is candidate ranked #1?
+```
+
+
+Example:
+
+
+```
+Candidate ranked higher because:
+
+Skill Match: 94%
+
+Strong AI projects
+
+High learning score
+
+Verified capability evidence
+
+```
+
+
+No hallucination.
+
+Uses real ranking scores.
 
 
 ---
 
 
-# 🇮🇳 Bias Intelligence Engine
+# 📊 Analytics Dashboard
 
 
-Designed for India's talent ecosystem.
-
-
-Problem:
-
-Many skilled Tier-2/Tier-3 students lose visibility.
-
-
-ContextRank measures:
-
+Implemented:
 
 ```
-Candidates Tested : 1000+
-
-Hidden Gems Found : 159+
-
-Fairness Score : 93%
-
-Opportunity Recovery : +42%
-
-Ranking Speed : 0.13 sec
-
+src/pages/StatsPage.jsx
 ```
 
 
-Promotes:
+Features:
+
+✔ Candidate distribution  
+✔ College tier analysis  
+✔ Skill trends  
+✔ Ranking metrics  
+✔ AI system health
 
 
-✔ Skill-first hiring  
-
-✔ Equal opportunity  
-
-✔ Reduced background bias  
-
-
-
----
-
-# 📊 AI Evaluation Metrics
-
+Metrics:
 
 ```
-Precision@10        88%
+Precision@10 : 88%
 
-NDCG@10             91%
+NDCG@10      : 91%
 
-Semantic Accuracy   92%
+Latency      : 0.13 sec
 
-API Health          100%
+API Health   : PASS
 
 ```
-
 
 
 ---
 
 
-# 🎨 AI Dashboard
+# 🖥 Frontend Features
 
 
-Includes:
-
-
-```
-🧠 Gemini Brain
-
-🚀 FAISS Memory
-
-🐙 GitHub Intelligence
-
-📈 Learning Ranker
-
-🇮🇳 Bias Intelligence
-
-📊 Evaluation Engine
-
-⭐ Hidden Gems
-
-🏆 Candidate Ranking
-
-```
-
-
-
----
-
-
-# 🔥 API Endpoints
-
-
-| Endpoint | Purpose |
-|-|-|
-| `/api/rank` | Candidate Ranking |
-| `/api/analyze-job` | LLM Job Analysis |
-| `/api/github/{username}` | Developer Signal Intelligence |
-| `/api/feedback` | Recruiter Learning |
-| `/api/bias-report` | Bias Intelligence |
-| `/api/evaluation` | Ranking Metrics |
-| `/api/system-status` | System Health |
-
-
-
----
-
-# 🛠 Technology Stack
-
-
-## Frontend
+Built using:
 
 - React
 - Vite
 - Framer Motion
-- Lucide React
-- Animated AI Dashboard
+- Recharts
+- Lucide Icons
 
 
-## Backend
+Pages:
 
-- Python
-- FastAPI
-- SQLite
-- REST APIs
+```
+RankPage.jsx
+
+GemsPage.jsx
+
+ComparePage.jsx
+
+AIEnginePage.jsx
+
+StatsPage.jsx
+```
 
 
-## AI / ML
+Includes:
 
-- Gemini LLM
-- FAISS Vector Search
-- Sentence Embeddings
-- XGBoost Ranker
-- GitHub Intelligence
-
+🔥 AI dashboard  
+🔥 Candidate ranking cards  
+🔥 Radar charts  
+🔥 Compare mode  
+🔥 Hidden gems UI  
+🔥 AI explanations  
 
 
 ---
 
-# 📂 Project Structure
+
+# ⚙️ Backend Structure
 
 
 ```
-
-ContextRank_AI
-
-
 backend/
 
-├── api/
 
-│   └── main.py
-
-
-├── agents/
-
-│   └── llm_recruiter.py
+agents/
+ ├── llm_recruiter.py
+ └── explanation_agent.py
 
 
-├── vector_store/
-
-│   └── faiss_engine.py
-
-
-├── integrations/
-
-│   └── github_analyzer.py
+api/
+ └── main.py
 
 
-├── database/
-
-│   └── feedback_db.py
-
-
-├── ml/
-
-│   └── learning_ranker.py
+core/
+ ├── capability_dna.py
+ └── semantic_engine.py
 
 
-├── intelligence/
-
-│   ├── bias_engine.py
-
-│   └── evaluation_engine.py
-
+intelligence/
+ ├── bias_engine.py
+ ├── evaluation_engine.py
+ └── signal_engine.py
 
 
-frontend/
-
-├── src/
-
-│   ├── components/
-
-│   ├── pages/
-
-│   └── App.jsx
+ml/
+ └── learning_ranker.py
 
 
-datasets/
+ranking/
+ └── context_rank_engine.py
 
-results/
 
-docs/
+vector_store/
+ └── faiss_engine.py
 
 ```
-
 
 
 ---
 
 
-# 🚀 Running Locally
+# 🚀 Run Locally
 
 
 ## Backend
 
 
 ```bash
-
 cd backend
-
-
-python -m venv venv
-
-
-source venv/Scripts/activate
-
 
 pip install -r requirements.txt
 
-
-python -m uvicorn api.main:app --reload
-
+uvicorn api.main:app --reload
 ```
 
 
-Swagger:
-
+API:
 
 ```
-http://127.0.0.1:8000/docs
+localhost:8000/docs
 ```
-
 
 
 ---
@@ -620,25 +558,34 @@ http://127.0.0.1:8000/docs
 
 
 ```bash
-
 cd frontend
-
 
 npm install
 
-
 npm run dev
-
 ```
 
 
 Open:
 
-
 ```
-http://localhost:5173
+localhost:5173
 ```
 
+
+---
+
+
+# 🔥 API Features
+
+
+| API | Purpose |
+|-|-|
+| /api/challenge-rank | Rank 100K candidates |
+| /api/analytics | Dashboard metrics |
+| /api/copilot | AI explanation |
+| /api/system-status | Health check |
+| /api/hidden-gems | Discover talent |
 
 
 ---
@@ -649,16 +596,14 @@ http://localhost:5173
 
 | Feature | ATS | ContextRank |
 |-|-|-|
-| Keyword Matching | ✅ | ✅ |
-| Semantic Understanding | ❌ | ✅ |
-| LLM Reasoning | ❌ | ✅ |
-| Vector Search | ❌ | ✅ |
-| Developer Signals | ❌ | ✅ |
+| Keyword Search | ✅ | ✅ |
+| Semantic AI | ❌ | ✅ |
+| Vector Memory | ❌ | ✅ |
+| Explainable AI | ❌ | ✅ |
+| Bias Reduction | ❌ | ✅ |
+| Hidden Gems | ❌ | ✅ |
 | Adaptive Learning | ❌ | ✅ |
-| Persistent Memory | ❌ | ✅ |
-| Bias Intelligence | ❌ | ✅ |
-| Hidden Talent Discovery | ❌ | ✅ |
-
+| 100K Ranking | ❌ | ✅ |
 
 
 ---
@@ -670,10 +615,10 @@ http://localhost:5173
 # 🌟 ContextRank AI
 
 
-## Finding The Talent The World Overlooks.
+### Beyond Resumes. Beyond Keywords. Beyond Bias.
 
 
-### Built for The Data & AI Challenge by India.Runs with Redrob AI 🏆
+## Built for Data & AI Challenge by India.Runs with Redrob AI 🏆
 
 
 </div>
