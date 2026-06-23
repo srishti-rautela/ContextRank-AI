@@ -60,15 +60,15 @@ function AnimatedCandidateRow({ candidate, started, settleDelayMs }) {
       <div style={{
         width: 28, height: 28, borderRadius: '50%',
         background: settled && candidate.rank <= 3 ? '#EEF2FF' : '#F3F4F6',
-        color: settled && candidate.rank <= 3 ? '#4338CA' : '#9CA3AF',
+        color: settled && candidate.rank <= 3 ? '#4338CA' : '#64748b',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontWeight: 700, fontSize: 12, flexShrink: 0,
         transition: 'background 0.4s ease, color 0.4s ease',
       }}>{settled ? `#${candidate.rank}` : '·'}</div>
 
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 13.5, fontWeight: 600, color: '#111827' }}>{candidate.name}</div>
-        <div style={{ fontSize: 11.5, color: '#9CA3AF' }}>
+        <div style={{ fontSize: 13.5, fontWeight: 600, color:"#f8fafc" }}>{candidate.name}</div>
+        <div style={{ fontSize: 11.5, color: '#64748b' }}>
           {candidate.city} · {candidate.college_tier?.toUpperCase()}
           {candidate.is_hidden_gem && settled && (
             <span style={{ marginLeft: 6, color: '#92400E', fontWeight: 600 }}>⭐ hidden gem</span>
@@ -106,7 +106,7 @@ export default function LiveRankAnimation({ candidates, onComplete }) {
 
   return (
     <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: 14, padding: '16px 18px', marginBottom: 16 }}>
-      <div style={{ fontSize: 11, fontWeight: 700, color: '#9CA3AF', textTransform: 'uppercase',
+      <div style={{ fontSize: 11, fontWeight: 700, color: '#64748b', textTransform: 'uppercase',
         letterSpacing: '0.06em', marginBottom: 10 }}>
         Live ranking computation
       </div>
@@ -125,7 +125,7 @@ export default function LiveRankAnimation({ candidates, onComplete }) {
                 transition: 'all 0.3s ease',
               }}/>
               <span style={{
-                color: done ? '#059669' : active ? '#4338CA' : '#9CA3AF',
+                color: done ? '#059669' : active ? '#4338CA' : '#64748b',
                 fontWeight: active ? 600 : 400,
                 transition: 'color 0.3s ease',
               }}>{s.label}{active && !done ? '…' : done ? ' — done' : ''}</span>

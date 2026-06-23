@@ -1,105 +1,122 @@
 from google import genai
-from dotenv import load_dotenv
 import os
-import json
-import re
 
 
-load_dotenv()
-
-
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = os.getenv(
+    "GEMINI_API_KEY",
+    ""
 )
 
 
-def clean_json(text):
+client = None
 
-    text = re.sub(
-        r"```json|```",
-        "",
-        text
+
+if GEMINI_API_KEY:
+
+    client = genai.Client(
+        api_key=GEMINI_API_KEY
     )
 
-    return text.strip()
 
 
-
-def analyze_job(job):
-
-    prompt = f"""
-
-You are an expert AI recruiter.
-
-Analyze this job description:
-
-{job}
+def analyze_job(
+    job_description: str
+):
 
 
-Return ONLY valid JSON.
-
-No markdown.
-
-Format:
-
-{{
-"role":"",
-"must_have_skills":[],
-"hidden_expectations":[],
-"experience_level":"",
-"success_traits":[]
-}}
-
-"""
-
-
-    try:
-
-        response = client.models.generate_content(
-            model="gemini-2.5-flash-lite",
-            contents=prompt
-        )
-
-
-        cleaned = clean_json(
-            response.text
-        )
-
-
-        return json.loads(
-            cleaned
-        )
-
-
-    except Exception as e:
+    # fallback if no API key
+    if client is None:
 
         return {
 
-            "error":
-            str(e),
+            "role":
+            job_description,
 
-            "fallback_result":{
 
-                "role":"AI Engineer",
+            "skills":
+            extract_basic_skills(
+                job_description
+            ),
 
-                "must_have_skills":[
-                    "Python",
-                    "Machine Learning",
-                    "LLM"
-                ],
 
-                "hidden_expectations":[
-                    "model deployment",
-                    "problem solving",
-                    "AI systems"
-                ],
+            "hidden_signals":
 
-                "experience_level":
-                "mid",
+            [
+                "problem solving",
+                "system design",
+                "learning ability"
+            ]
 
-                "success_traits":[
-                    "learning ability",
-                    "ownership"
-                ]
-            }
         }
+
+
+
+    response = client.models.generate_content(
+
+        model="gemini-2.5-flash",
+
+
+        contents=f"""
+
+        Act as an expert recruiter.
+
+        Analyze this job:
+
+        {job_description}
+
+
+        Return:
+        - role
+        - required skills
+        - hidden expectations
+        - success signals
+
+        """
+
+    )
+
+
+    return {
+
+        "analysis":
+
+        response.text
+
+    }
+
+
+
+
+def extract_basic_skills(text):
+
+
+    skills = [
+
+        "Python",
+        "Machine Learning",
+        "LLM",
+        "React",
+        "FastAPI",
+        "SQL",
+        "Cloud",
+        "AWS",
+        "Docker"
+
+    ]
+
+
+    found=[]
+
+
+    lower=text.lower()
+
+
+    for s in skills:
+
+        if s.lower() in lower:
+
+            found.append(s)
+
+
+
+    return found

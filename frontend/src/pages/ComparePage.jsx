@@ -1,120 +1,802 @@
-// src/pages/ComparePage.jsx
-import { useState } from 'react'
-import { explainComparison } from '../hooks/useApi.js'
-import { Card, Spinner, EmptyState, ScoreCircle } from '../components/ui.jsx'
+import { useState } from "react"
 
-export default function ComparePage({ jdId, selected, onClear }) {
-  const [result, setResult] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+import {
+ Brain,
+ Trophy,
+ XCircle
+} from "lucide-react"
 
-  const canCompare = selected.length === 2
+import {
+ explainComparison
+} from "../hooks/useApi.js"
 
-  const runCompare = async () => {
-    setLoading(true)
-    setError(null)
-    try {
-      const data = await explainComparison(jdId, selected[0].candidate_id, selected[1].candidate_id)
-      setResult(data)
-    } catch (e) {
-      setError('Could not reach the API. Make sure the backend is running on port 8000.')
-    } finally {
-      setLoading(false)
-    }
-  }
 
-  if (!canCompare) {
-    return (
-      <Card>
-        <EmptyState
-          icon="⚖️"
-          title="Select 2 candidates to compare"
-          subtitle={`Go to "Ranked Results", click "Compare" on two candidates, then come back here. (${selected.length}/2 selected)`}
-        />
-      </Card>
-    )
-  }
 
-  return (
-    <div>
-      <h2 style={{ fontSize: 18, fontWeight: 700, color: '#111827', marginBottom: 4 }}>
-        Head-to-Head Explainability
-      </h2>
-      <p style={{ fontSize: 13, color: '#6B7280', marginBottom: 16 }}>
-        Why does one candidate outrank the other? Full dimension breakdown.
-      </p>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: 16, alignItems: 'center', marginBottom: 16 }}>
-        {selected.map((c, i) => (
-          <Card key={c.candidate_id} style={{ textAlign: 'center' }}>
-            <ScoreCircle score={c.overall_match} size={64} />
-            <div style={{ fontWeight: 700, fontSize: 14, marginTop: 8, color: '#111827' }}>{c.name}</div>
-            <div style={{ fontSize: 12, color: '#6B7280' }}>{c.college} ({c.college_tier})</div>
-          </Card>
-        )).reduce((acc, el, i) => i === 0 ? [el] : [...acc, <div key="vs" style={{ fontWeight: 800, color: '#9CA3AF', fontSize: 14 }}>VS</div>, el], [])}
-      </div>
 
-      {!result && (
-        <button onClick={runCompare} disabled={loading} style={{
-          width: '100%', padding: '12px', borderRadius: 10, border: 'none',
-          background: '#6366F1', color: '#fff', fontWeight: 600, fontSize: 14,
-          cursor: 'pointer', marginBottom: 16,
-        }}>
-          {loading ? 'Analyzing...' : 'Run Explainability Analysis'}
-        </button>
-      )}
+export default function ComparePage({
 
-      {loading && <div style={{ display: 'flex', justifyContent: 'center', padding: 30 }}><Spinner size={30}/></div>}
-      {error && <Card style={{ background: '#FEF2F2', border: '1px solid #FCA5A5' }}>
-        <span style={{ color: '#991B1B', fontSize: 13 }}>{error}</span>
-      </Card>}
+selected=[],
+onClear
 
-      {result && (
-        <>
-          <Card style={{ background: '#F5F3FF', border: '1px solid #DDD6FE', marginBottom: 16 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#4C1D95', marginBottom: 6 }}>
-              🏆 Winner: {result.winner} (by {result.margin} points)
-            </div>
-            <div style={{ fontSize: 13, color: '#5B21B6' }}>{result.explanation}</div>
-          </Card>
+}){
 
-          <Card>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#111827', marginBottom: 12 }}>
-              Key Dimension Differences
-            </div>
-            {result.key_differences.map(d => (
-              <div key={d.dimension} style={{ marginBottom: 12 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12,
-                  color: '#374151', marginBottom: 4, textTransform: 'capitalize' }}>
-                  <span>{d.dimension.replace(/_/g, ' ')}</span>
-                  <span style={{ fontWeight: 700, color: d.diff > 0 ? '#059669' : '#DC2626' }}>
-                    {d.diff > 0 ? '+' : ''}{d.diff}
-                  </span>
-                </div>
-                <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-                  <div style={{ flex: 1, height: 8, background: '#E5E7EB', borderRadius: 4, position: 'relative' }}>
-                    <div style={{ position: 'absolute', left: 0, top: 0, height: '100%',
-                      width: `${d.a}%`, background: '#6366F1', borderRadius: 4 }}/>
-                  </div>
-                  <span style={{ fontSize: 11, color: '#6B7280', width: 60 }}>A: {d.a}</span>
-                </div>
-                <div style={{ display: 'flex', gap: 4, alignItems: 'center', marginTop: 2 }}>
-                  <div style={{ flex: 1, height: 8, background: '#E5E7EB', borderRadius: 4, position: 'relative' }}>
-                    <div style={{ position: 'absolute', left: 0, top: 0, height: '100%',
-                      width: `${d.b}%`, background: '#D97706', borderRadius: 4 }}/>
-                  </div>
-                  <span style={{ fontSize: 11, color: '#6B7280', width: 60 }}>B: {d.b}</span>
-                </div>
-              </div>
-            ))}
-          </Card>
 
-          <button onClick={() => { setResult(null); onClear() }} style={{
-            marginTop: 12, padding: '8px 16px', borderRadius: 8, fontSize: 12,
-            border: '1px solid #D1D5DB', background: '#fff', cursor: 'pointer', color: '#374151',
-          }}>Clear selection</button>
-        </>
-      )}
-    </div>
-  )
+const [analysis,setAnalysis]=useState(null)
+
+const [loading,setLoading]=useState(false)
+
+
+
+
+
+async function runCompare(){
+
+
+if(selected.length!==2)
+return
+
+
+
+setLoading(true)
+
+setAnalysis(null)
+
+
+
+try{
+
+
+const res =
+await explainComparison(
+
+selected[0],
+
+selected[1]
+
+)
+
+
+setAnalysis(res)
+
+
+
+}
+
+catch(e){
+
+
+setAnalysis({
+
+winner:"AI unavailable",
+
+explanation:
+"Comparison service failed. Showing local capability comparison."
+
+})
+
+
+}
+
+
+
+setLoading(false)
+
+
+
+}
+
+
+
+
+
+
+
+
+
+if(selected.length<2){
+
+
+return(
+
+<div className="empty">
+
+
+<h1>
+
+⚖ Candidate Comparison
+
+</h1>
+
+
+<p>
+
+Enable compare mode and select any 2 candidates.
+
+</p>
+
+
+
+<h2>
+
+Selected {selected.length}/2
+
+</h2>
+
+
+</div>
+
+)
+
+
+}
+
+
+
+
+
+
+
+
+const a=selected[0]
+
+const b=selected[1]
+
+
+
+
+
+
+
+
+return(
+
+
+<div>
+
+
+
+<h1>
+
+⚖ AI Candidate Battle
+
+</h1>
+
+
+
+<p style={{color:"#94a3b8"}}>
+
+ContextRank compares candidates beyond keywords using semantic capability signals.
+
+</p>
+
+
+
+
+
+
+<div
+
+style={{
+
+display:"grid",
+
+gridTemplateColumns:
+"repeat(auto-fit,minmax(320px,1fr))",
+
+gap:25,
+
+marginTop:30
+
+}}
+
+>
+
+
+<CandidateBox candidate={a}/>
+
+
+<CandidateBox candidate={b}/>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<button
+
+onClick={runCompare}
+
+disabled={loading}
+
+
+style={{
+
+marginTop:30,
+
+padding:"15px 35px",
+
+borderRadius:14,
+
+border:"none",
+
+background:
+"linear-gradient(90deg,#6366f1,#06b6d4)",
+
+color:"white",
+
+fontWeight:900,
+
+fontSize:15,
+
+display:"flex",
+
+alignItems:"center",
+
+gap:10,
+
+cursor:"pointer"
+
+}}
+
+>
+
+
+<Brain size={20}/>
+
+
+
+{
+
+loading
+
+?
+
+"AI analyzing..."
+
+:
+
+"Compare with AI"
+
+}
+
+
+
+</button>
+
+
+
+
+
+
+
+
+{
+
+loading &&
+
+
+<div
+
+style={{
+
+margin:"40px auto",
+
+width:50,
+
+height:50,
+
+borderRadius:"50%",
+
+border:"5px solid #334155",
+
+borderTop:"5px solid white",
+
+animation:"spin 1s linear infinite"
+
+}}
+
+/>
+
+
+}
+
+
+
+
+
+
+
+
+
+{
+
+analysis &&
+
+
+<div className="decision">
+
+
+<Trophy size={35}/>
+
+
+
+<h2>
+
+🏆 AI Decision
+
+</h2>
+
+
+
+<h1>
+
+{
+
+analysis.winner ||
+
+"Best Match Selected"
+
+}
+
+</h1>
+
+
+
+
+<p>
+
+{
+
+analysis.explanation ||
+
+analysis.reason ||
+
+"Candidate selected based on stronger semantic match, skills and potential."
+
+}
+
+</p>
+
+
+
+
+<div
+
+style={{
+
+display:"grid",
+
+gridTemplateColumns:
+"repeat(auto-fit,minmax(250px,1fr))",
+
+gap:15
+
+}}
+
+>
+
+
+<Mini title="Candidate A Strengths"
+items={analysis.strengths_a}/>
+
+
+<Mini title="Candidate B Strengths"
+items={analysis.strengths_b}/>
+
+
+</div>
+
+
+
+</div>
+
+
+}
+
+
+
+
+
+
+
+
+
+<button
+
+onClick={onClear}
+
+
+style={{
+
+marginTop:25,
+
+padding:"12px 25px",
+
+borderRadius:12,
+
+background:"#7f1d1d",
+
+border:"none",
+
+color:"white",
+
+fontWeight:800,
+
+cursor:"pointer",
+
+display:"flex",
+
+gap:8,
+
+alignItems:"center"
+
+}}
+
+>
+
+
+<XCircle size={18}/>
+
+Clear Comparison
+
+
+</button>
+
+
+
+
+
+
+
+<style>
+
+{`
+
+.empty,
+
+.decision{
+
+background:
+
+linear-gradient(145deg,#111827,#020617);
+
+
+border:
+
+1px solid rgba(255,255,255,.15);
+
+
+color:white;
+
+
+padding:30px;
+
+
+border-radius:20px;
+
+
+box-shadow:
+
+0 20px 40px rgba(0,0,0,.5);
+
+
+}
+
+
+
+@keyframes spin{
+
+from{
+
+transform:rotate(0deg);
+
+}
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+
+`}
+
+</style>
+
+
+
+
+</div>
+
+
+)
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function CandidateBox({candidate}){
+
+
+return(
+
+<div
+
+style={{
+
+background:
+
+"linear-gradient(145deg,#111827,#020617)",
+
+
+border:
+
+"1px solid rgba(255,255,255,.15)",
+
+
+padding:25,
+
+
+borderRadius:20,
+
+
+color:"white",
+
+
+boxShadow:
+
+"0 20px 40px rgba(0,0,0,.45)"
+
+}}
+
+>
+
+
+
+<h2>
+
+🏅 Rank #{candidate.rank}
+
+</h2>
+
+
+
+
+<h1>
+
+{
+
+candidate.name ||
+
+candidate.candidate_id
+
+}
+
+</h1>
+
+
+
+
+
+
+<h1
+
+style={{
+
+color:"#22c55e",
+
+fontSize:45
+
+}}
+
+>
+
+
+{
+
+Math.round(
+
+candidate.overall_match ||
+
+candidate.rank_score ||
+
+candidate.score ||
+
+0
+
+)
+
+}
+
+%
+
+</h1>
+
+
+
+
+
+
+<p style={{color:"#94a3b8"}}>
+
+
+{
+
+candidate.reasoning ||
+
+"AI generated talent profile."
+
+}
+
+
+</p>
+
+
+
+
+
+
+
+<div
+
+style={{
+
+display:"flex",
+
+gap:8,
+
+flexWrap:"wrap"
+
+}}
+
+>
+
+
+{
+
+
+(candidate.skills || [])
+
+.slice(0,10)
+
+.map(s=>(
+
+
+<span
+
+key={s}
+
+
+style={{
+
+
+background:
+
+"rgba(56,189,248,.15)",
+
+
+border:
+
+"1px solid #38bdf8",
+
+
+color:"#7dd3fc",
+
+
+padding:"6px 12px",
+
+
+borderRadius:20,
+
+
+fontSize:12
+
+
+}}
+
+>
+
+
+{s}
+
+
+</span>
+
+
+))
+
+
+}
+
+
+</div>
+
+
+
+</div>
+
+
+)
+
+}
+
+
+
+
+
+
+
+
+
+function Mini({title,items=[]}){
+
+
+return(
+
+<div
+
+style={{
+
+background:
+
+"rgba(255,255,255,.08)",
+
+padding:15,
+
+borderRadius:12,
+
+marginTop:20
+
+}}
+
+>
+
+
+<h4>
+
+{title}
+
+</h4>
+
+
+
+{
+
+(items.length?items:["Strong capability signals"])
+
+.map((x,i)=>(
+
+<p key={i}>
+
+✓ {x}
+
+</p>
+
+))
+
+}
+
+
+
+</div>
+
+)
+
 }

@@ -3,7 +3,9 @@ import requests
 
 def analyze_github(username):
 
+
     url = f"https://api.github.com/users/{username}/repos"
+
 
     try:
 
@@ -13,22 +15,12 @@ def analyze_github(username):
         )
 
 
-        if response.status_code != 200:
-
-            return {
-                "github_user": username,
-                "error": "GitHub profile not found"
-            }
-
-
         repos = response.json()
 
 
         languages = {}
 
         stars = 0
-
-        forks = 0
 
 
         for repo in repos:
@@ -41,9 +33,10 @@ def analyze_github(username):
 
             if language:
 
+
                 languages[language] = (
-                    languages.get(language, 0)
-                    + 1
+                    languages.get(language,0)
+                    +1
                 )
 
 
@@ -53,50 +46,8 @@ def analyze_github(username):
             )
 
 
-            forks += repo.get(
-                "forks_count",
-                0
-            )
 
-
-        # ------------------------------
-        # ContextRank Developer Scoring
-        # ------------------------------
-
-
-        # rewards number of projects
-        project_score = min(
-            len(repos) * 8,
-            50
-        )
-
-
-        # rewards multiple technologies
-        language_score = min(
-            len(languages) * 10,
-            30
-        )
-
-
-        # rewards community impact
-        popularity_score = min(
-            (stars * 2) + forks,
-            20
-        )
-
-
-
-        developer_signal_score = min(
-
-            100,
-
-            project_score
-            +
-            language_score
-            +
-            popularity_score
-
-        )
+        
 
 
         return {
@@ -112,9 +63,11 @@ def analyze_github(username):
             len(repos),
 
 
+
             "languages_detected":
 
             languages,
+
 
 
             "stars":
@@ -122,41 +75,16 @@ def analyze_github(username):
             stars,
 
 
-            "forks":
-
-            forks,
-
-
-            "score_breakdown": {
-
-
-                "project_strength":
-
-                project_score,
-
-
-                "technology_diversity":
-
-                language_score,
-
-
-                "community_impact":
-
-                popularity_score
-
-            },
-
-
 
             "developer_signal_score":
 
-            developer_signal_score,
-
+            open_source_score,
 
 
             "signal":
 
-            "Real developer activity analyzed using GitHub intelligence"
+            "Real developer activity analyzed"
+
 
         }
 
@@ -167,8 +95,6 @@ def analyze_github(username):
 
         return {
 
-            "github_user": username,
-
-            "error": str(e)
+            "error":str(e)
 
         }

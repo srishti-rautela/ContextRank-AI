@@ -1,161 +1,916 @@
 // src/components/RecruiterCopilot.jsx
-// "Why is X ranked #N?" — a chat-style interface over real computed
-// CapabilityDNA scores. Every sentence the copilot says is built from
-// actual numbers already returned by the ranking engine — this is
-// template-based, not an LLM call, specifically so it can never say
-// something that doesn't match the real ranking.
 
-import { useState } from 'react'
-import { Badge, Spinner } from './ui.jsx'
+import { useState } from "react"
 
-const API = '/api'
+import {
+    Badge,
+    Spinner
+} from "./ui.jsx"
 
-export default function RecruiterCopilot({ jdId, candidates }) {
-  const [selectedId, setSelectedId] = useState('')
-  const [messages, setMessages] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [open, setOpen] = useState(false)
 
-  const ask = async () => {
-    if (!selectedId) return
-    const candidate = candidates.find(c => c.candidate_id === selectedId)
-    setLoading(true)
-    setMessages(prev => [...prev, {
-      role: 'user',
-      text: `Why is ${candidate?.name || selectedId} ranked where they are?`,
-    }])
-    try {
-      const res = await fetch(`${API}/copilot/ask`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jd_id: jdId, candidate_id: selectedId }),
-      })
-      if (!res.ok) throw new Error('failed')
-      const data = await res.json()
-      setMessages(prev => [...prev, { role: 'copilot', data }])
-    } catch {
-      setMessages(prev => [...prev, {
-        role: 'copilot',
-        data: null,
-        error: 'Could not reach the API.',
-      }])
-    } finally {
-      setLoading(false)
-    }
-  }
 
-  return (
-    <div style={{
-      background: '#fff', border: '1px solid #E5E7EB', borderRadius: 14,
-      marginBottom: 16, overflow: 'hidden',
-    }}>
-      <div onClick={() => setOpen(o => !o)} style={{
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '14px 16px', cursor: 'pointer',
-        background: open ? '#FAFAF9' : '#fff',
-      }}>
-        <div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: '#111827' }}>
-            💬 Ask the recruiter copilot
-          </div>
-          <div style={{ fontSize: 12, color: '#6B7280', marginTop: 2 }}>
-            "Why is this candidate ranked here?" — answered from real scores, not guesses.
-          </div>
-        </div>
-        <span style={{ fontSize: 14, color: '#9CA3AF' }}>{open ? '▲' : '▼'}</span>
-      </div>
+const API =
+"http://127.0.0.1:8000/api"
 
-      {open && (
-        <div style={{ padding: '0 16px 16px' }}>
-          <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-            <select
-              value={selectedId}
-              onChange={e => setSelectedId(e.target.value)}
-              style={{
-                flex: 1, padding: '8px 10px', borderRadius: 8,
-                border: '1px solid #D1D5DB', fontSize: 13, background: '#fff',
-              }}
-            >
-              <option value="">Select a candidate to ask about…</option>
-              {candidates.map(c => (
-                <option key={c.candidate_id} value={c.candidate_id}>
-                  #{c.rank} {c.name} ({c.overall_match}%)
-                </option>
-              ))}
-            </select>
-            <button
-              onClick={ask}
-              disabled={!selectedId || loading}
-              style={{
-                padding: '8px 16px', borderRadius: 8, border: 'none',
-                background: '#6366F1', color: '#fff', fontWeight: 600, fontSize: 13,
-                cursor: selectedId && !loading ? 'pointer' : 'default',
-                opacity: selectedId && !loading ? 1 : 0.5,
-              }}
-            >Ask</button>
-          </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {messages.map((m, i) => (
-              <ChatBubble key={i} message={m} />
-            ))}
-            {loading && (
-              <div style={{ display: 'flex', justifyContent: 'center', padding: 12 }}>
-                <Spinner size={18} />
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  )
+
+
+
+export default function RecruiterCopilot({
+
+jdId,
+candidates=[]
+
+}){
+
+
+const [selectedId,setSelectedId] =
+useState("")
+
+
+const [messages,setMessages] =
+useState([])
+
+
+const [loading,setLoading] =
+useState(false)
+
+
+const [open,setOpen] =
+useState(false)
+
+
+
+
+
+
+async function ask(){
+
+
+if(!selectedId)
+return
+
+
+
+const candidate =
+candidates.find(
+c=>c.candidate_id===selectedId
+)
+
+
+
+
+setMessages(prev=>[
+
+...prev,
+
+{
+role:"user",
+text:
+`Why is ${candidate?.name || selectedId} ranked where they are?`
 }
 
-function ChatBubble({ message }) {
-  if (message.role === 'user') {
-    return (
-      <div style={{ alignSelf: 'flex-end', maxWidth: '85%', marginLeft: 'auto' }}>
-        <div style={{
-          background: '#6366F1', color: '#fff', borderRadius: '12px 12px 2px 12px',
-          padding: '8px 12px', fontSize: 13,
-        }}>{message.text}</div>
-      </div>
-    )
-  }
+])
 
-  if (message.error) {
-    return (
-      <div style={{ maxWidth: '85%' }}>
-        <div style={{
-          background: '#FEF2F2', color: '#991B1B', borderRadius: '12px 12px 12px 2px',
-          padding: '8px 12px', fontSize: 13,
-        }}>{message.error}</div>
-      </div>
-    )
-  }
 
-  const d = message.data
-  return (
-    <div style={{ maxWidth: '92%' }}>
-      <div style={{
-        background: '#F3F4F6', borderRadius: '12px 12px 12px 2px',
-        padding: '12px 14px', fontSize: 13, color: '#111827',
-      }}>
-        <div style={{ marginBottom: 8 }}>{d.answer}</div>
 
-        {d.is_hidden_gem && <Badge variant="gem">⭐ Hidden gem</Badge>}
+setLoading(true)
 
-        {d.growth_plan && d.growth_plan.length > 0 && (
-          <div style={{ marginTop: 10 }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: '#6B7280', marginBottom: 4 }}>
-              GROWTH PLAN
-            </div>
-            {d.growth_plan.map((g, i) => (
-              <div key={i} style={{ fontSize: 12, color: '#4B5563' }}>• {g}</div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  )
+
+
+try{
+
+
+const res =
+await fetch(
+
+`${API}/copilot/ask`,
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+
+body:JSON.stringify({
+
+jd_id:jdId,
+
+candidate_id:selectedId
+
+})
+
+}
+
+)
+
+
+
+
+if(!res.ok)
+
+throw new Error("API failed")
+
+
+
+
+const data =
+await res.json()
+
+
+
+
+setMessages(prev=>[
+
+...prev,
+
+{
+
+role:"copilot",
+
+data
+
+}
+
+])
+
+
+
+}
+
+catch(e){
+
+
+setMessages(prev=>[
+
+...prev,
+
+{
+
+role:"copilot",
+
+error:
+"Could not reach the AI recruiter engine."
+
+}
+
+])
+
+
+}
+
+finally{
+
+setLoading(false)
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+return(
+
+
+<div
+
+style={{
+
+
+background:
+
+"linear-gradient(145deg,#111827,#020617)",
+
+
+border:
+
+"1px solid #334155",
+
+
+borderRadius:18,
+
+
+marginBottom:20,
+
+
+overflow:"hidden",
+
+
+color:"white",
+
+
+boxShadow:
+
+"0 20px 40px rgba(0,0,0,.45)"
+
+
+}}
+
+
+>
+
+
+
+
+
+{/* HEADER */}
+
+
+<div
+
+onClick={()=>setOpen(!open)}
+
+
+style={{
+
+
+display:"flex",
+
+justifyContent:"space-between",
+
+alignItems:"center",
+
+
+padding:18,
+
+
+cursor:"pointer"
+
+
+}}
+
+>
+
+
+
+<div>
+
+
+<h3
+
+style={{
+
+margin:0,
+
+color:"white"
+
+}}
+
+>
+
+💬 Ask the recruiter copilot
+
+</h3>
+
+
+
+
+<p
+
+style={{
+
+fontSize:13,
+
+color:"#94a3b8"
+
+}}
+
+>
+
+
+"Why is this candidate ranked here?"
+— answered from real scores, not guesses.
+
+
+</p>
+
+
+</div>
+
+
+
+
+<span>
+
+{open?"▲":"▼"}
+
+</span>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{
+
+open &&
+
+
+<div
+
+style={{
+
+padding:18
+
+}}
+
+>
+
+
+
+
+
+
+<div
+
+style={{
+
+display:"flex",
+
+gap:10
+
+}}
+
+>
+
+
+
+
+<select
+
+
+value={selectedId}
+
+
+onChange={e=>setSelectedId(e.target.value)}
+
+
+
+style={{
+
+
+flex:1,
+
+
+padding:12,
+
+
+borderRadius:10,
+
+
+background:"#020617",
+
+
+color:"white",
+
+
+border:"1px solid #334155"
+
+
+
+}}
+
+>
+
+
+<option value="">
+
+Select a candidate to ask about...
+
+</option>
+
+
+
+
+{
+
+candidates.map(c=>(
+
+
+
+<option
+
+key={c.candidate_id}
+
+value={c.candidate_id}
+
+>
+
+
+#{c.rank} {c.name}
+ ({c.overall_match}%)
+
+
+</option>
+
+
+
+))
+
+}
+
+
+
+</select>
+
+
+
+
+
+
+
+<button
+
+
+onClick={ask}
+
+
+disabled={loading || !selectedId}
+
+
+style={{
+
+
+padding:"10px 22px",
+
+
+borderRadius:10,
+
+
+border:"none",
+
+
+background:"#6366f1",
+
+
+color:"white",
+
+
+fontWeight:900,
+
+
+cursor:"pointer"
+
+
+}}
+
+>
+
+Ask
+
+</button>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div
+
+style={{
+
+
+display:"flex",
+
+flexDirection:"column",
+
+gap:14,
+
+
+marginTop:20
+
+
+}}
+
+>
+
+
+
+{
+
+
+messages.map((m,i)=>(
+
+
+<ChatBubble
+
+key={i}
+
+message={m}
+
+/>
+
+
+))
+
+
+}
+
+
+
+
+{
+
+loading &&
+
+
+<div
+
+style={{
+
+textAlign:"center"
+
+}}
+
+>
+
+<Spinner size={22}/>
+
+</div>
+
+
+}
+
+
+
+
+</div>
+
+
+
+
+</div>
+
+
+}
+
+
+
+
+</div>
+
+
+)
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function ChatBubble({
+
+message
+
+}){
+
+
+
+
+
+
+// USER MESSAGE
+
+if(message.role==="user"){
+
+
+return(
+
+
+<div
+
+style={{
+
+
+alignSelf:"flex-end",
+
+
+background:"#6366f1",
+
+
+padding:"12px 18px",
+
+
+borderRadius:
+
+"16px 16px 0 16px",
+
+
+color:"white",
+
+
+maxWidth:"80%"
+
+
+}}
+
+>
+
+{message.text}
+
+</div>
+
+
+)
+
+}
+
+
+
+
+
+
+// ERROR
+
+
+if(message.error){
+
+
+return(
+
+<div
+
+style={{
+
+
+background:"#450a0a",
+
+color:"#fecaca",
+
+padding:15,
+
+borderRadius:14
+
+}}
+
+>
+
+{message.error}
+
+</div>
+
+)
+
+}
+
+
+
+
+
+
+const d =
+message.data || {}
+
+
+
+
+
+return(
+
+
+
+<div
+
+
+style={{
+
+
+
+background:
+
+"linear-gradient(135deg,#082f49,#0f172a)",
+
+
+
+border:
+
+"1px solid rgba(56,189,248,.35)",
+
+
+
+padding:18,
+
+
+borderRadius:18,
+
+
+color:"#e0f2fe",
+
+
+lineHeight:1.7,
+
+
+maxWidth:"90%"
+
+
+
+}}
+
+
+>
+
+
+
+
+
+
+<p
+
+style={{
+
+
+color:"#f8fafc",
+
+
+margin:0,
+
+
+whiteSpace:"pre-line"
+
+
+
+}}
+
+>
+
+
+{
+
+d.answer ||
+
+"Candidate ranked using ContextRank AI semantic scoring."
+
+}
+
+
+</p>
+
+
+
+
+
+
+
+
+{
+
+d.is_hidden_gem &&
+
+
+<div style={{marginTop:10}}>
+
+
+<Badge variant="gem">
+
+⭐ Hidden Gem
+
+</Badge>
+
+
+</div>
+
+}
+
+
+
+
+
+
+
+
+
+{
+
+d.growth_plan &&
+
+d.growth_plan.length>0 &&
+
+
+
+<div style={{marginTop:15}}>
+
+
+
+<h4
+
+style={{
+
+
+color:"#38bdf8",
+
+
+marginBottom:8
+
+
+}}
+
+>
+
+
+🚀 GROWTH PLAN
+
+
+</h4>
+
+
+
+
+
+
+{
+
+
+d.growth_plan.map((g,i)=>(
+
+
+
+<p
+
+
+key={i}
+
+
+style={{
+
+
+color:"#e0f2fe",
+
+
+margin:"5px 0"
+
+
+
+}}
+
+>
+
+
+• {g}
+
+
+</p>
+
+
+
+))
+
+
+}
+
+
+
+
+</div>
+
+
+}
+
+
+
+
+</div>
+
+
+
+)
+
+
+
 }

@@ -7,10 +7,12 @@ export function Badge({ children, variant = 'gray' }) {
     blue:   { background: '#EFF6FF', color: '#1E40AF', border: '1px solid #93C5FD' },
     purple: { background: '#F5F3FF', color: '#4C1D95', border: '1px solid #C4B5FD' },
     red:    { background: '#FEF2F2', color: '#991B1B', border: '1px solid #FCA5A5' },
-    gray:   { background: '#F3F4F6', color: '#374151', border: '1px solid #D1D5DB' },
+    gray:   { background:
+"rgba(56,189,248,.15)", color: '#94a3b8', border: '1px solid #D1D5DB' },
     tier1:  { background: '#ECFDF5', color: '#065F46', border: '1px solid #6EE7B7' },
     tier2:  { background: '#EFF6FF', color: '#1E40AF', border: '1px solid #93C5FD' },
-    tier3:  { background: '#F3F4F6', color: '#374151', border: '1px solid #D1D5DB' },
+    tier3:  { background:
+"rgba(56,189,248,.15)", color: '#94a3b8', border: '1px solid #D1D5DB' },
   }
   const s = styles[variant] || styles.gray
   return (
@@ -65,21 +67,39 @@ export function ProgressBar({ value, color = '#6366F1', height = 5 }) {
   )
 }
 
-export function Spinner({ size = 24 }) {
-  return (
-    <div style={{
-      width: size, height: size, border: `3px solid #E5E7EB`,
-      borderTop: `3px solid #6366F1`, borderRadius: '50%',
-      animation: 'spin 0.8s linear infinite',
-    }}/>
-  )
-}
+export function Spinner({size=30}){
 
+return (
+
+<div
+
+style={{
+
+width:size,
+height:size,
+
+borderRadius:"50%",
+
+border:"4px solid rgba(255,255,255,.25)",
+
+borderTop:
+"4px solid #38bdf8",
+
+animation:
+"spin .8s linear infinite"
+
+}}
+
+/>
+
+)
+
+}
 export function EmptyState({ icon = '🔍', title, subtitle }) {
   return (
-    <div style={{ textAlign: 'center', padding: '48px 24px', color: '#6B7280' }}>
+    <div style={{ textAlign: 'center', padding: '48px 24px', color: '#94a3b8' }}>
       <div style={{ fontSize: 40, marginBottom: 12 }}>{icon}</div>
-      <div style={{ fontSize: 16, fontWeight: 600, color: '#374151', marginBottom: 6 }}>{title}</div>
+      <div style={{ fontSize: 16, fontWeight: 600, color: '#94a3b8', marginBottom: 6 }}>{title}</div>
       {subtitle && <div style={{ fontSize: 13 }}>{subtitle}</div>}
     </div>
   )

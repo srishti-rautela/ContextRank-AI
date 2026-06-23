@@ -1,56 +1,171 @@
+import os
+import pickle
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 
-class FAISSCandidateMemory:
+INDEX_PATH = (
+    "cache/faiss_candidates.index"
+)
 
-    def __init__(self):
-        self.model = SentenceTransformer(
-            "all-MiniLM-L6-v2"
+META_PATH = (
+    "cache/faiss_metadata.pkl"
+)
+
+
+
+def build_faiss_index(
+    embeddings,
+    candidates
+):
+
+
+    print(
+        "Building FAISS index..."
+    )
+
+
+    embeddings = (
+        embeddings
+        .astype("float32")
+    )
+
+
+    faiss.normalize_L2(
+        embeddings
+    )
+
+
+    dimension = embeddings.shape[1]
+
+
+    index = faiss.IndexFlatIP(
+        dimension
+    )
+
+
+    index.add(
+        embeddings
+    )
+
+
+    os.makedirs(
+        "cache",
+        exist_ok=True
+    )
+
+
+    faiss.write_index(
+        index,
+        INDEX_PATH
+    )
+
+
+    with open(
+        META_PATH,
+        "wb"
+    ) as f:
+
+        pickle.dump(
+            candidates,
+            f
         )
 
-        self.index = faiss.IndexFlatIP(384)
-        self.candidates = []
+
+    print(
+        "FAISS saved:",
+        index.ntotal
+    )
 
 
-    def build_index(self, candidates):
-
-        self.candidates = candidates
-
-        texts = []
-
-        for c in candidates:
-            text = f"""
-            {c.get('skills','')}
-            {c.get('projects','')}
-            {c.get('experience','')}
-            """
-
-            texts.append(text)
 
 
-        vectors = self.model.encode(texts)
 
-        faiss.normalize_L2(vectors)
+def load_faiss_index():
 
-        self.index.add(
-            np.array(vectors)
+
+    if not os.path.exists(
+        INDEX_PATH
+    ):
+
+        return None,None
+
+
+    index = faiss.read_index(
+        INDEX_PATH
+    )
+
+
+    with open(
+        META_PATH,
+        "rb"
+    ) as f:
+
+        metadata = pickle.load(
+            f
         )
 
 
-    def search(self, job, k=100):
+    print(
+        "FAISS loaded:",
+        index.ntotal
+    )
 
-        vector = self.model.encode([job])
 
-        faiss.normalize_L2(vector)
+    return (
+        index,
+        metadata
+    )
 
-        scores, ids = self.index.search(
-            np.array(vector),
-            k
+
+
+
+
+def search_candidates(
+    query_embedding,
+    top_k=200
+):
+
+
+    index,metadata = (
+        load_faiss_index()
+    )
+
+
+    if index is None:
+
+        return None
+
+
+
+    query_embedding = np.array(
+        [
+            query_embedding
+        ],
+        dtype="float32"
+    )
+
+
+    faiss.normalize_L2(
+        query_embedding
+    )
+
+
+    scores,ids = index.search(
+        query_embedding,
+        top_k
+    )
+
+
+    results=[]
+
+
+    for idx in ids[0]:
+
+
+        results.append(
+            metadata[idx]
         )
 
-        return [
-            self.candidates[i]
-            for i in ids[0]
-        ]
+
+    return results
