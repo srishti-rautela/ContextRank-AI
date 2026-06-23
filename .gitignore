@@ -1,3 +1,13 @@
+# AI generated data
+backend/data/raw/*.jsonl
+backend/data/processed/*.npy
+backend/data/processed/*.csv
+backend/cache/*.index
+
+# ML Models
+*.pkl
+*.joblib
+
 # ====================
 # Python
 # ====================
