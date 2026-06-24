@@ -16,7 +16,25 @@
 
 </div>
 
+---
 
+# 🎥 Demo Video
+
+▶️ Click the image beelow to Watch ContextRank AI in action:
+
+[![ContextRank AI Demo](assets/hero.png)](https://youtu.be/Dcq7_vC_72s)
+
+### Demo Highlights
+
+🚀 100,000 Candidate Ranking System  
+🧠 AI Recruiter Intelligence Engine  
+⚡ FAISS Semantic Talent Search  
+🧬 CapabilityDNA Scoring  
+⭐ Hidden Gem Candidate Discovery  
+📊 Talent Analytics Dashboard  
+🤖 Explainable AI Decisions  
+
+---
 ---
 
 # 🌍 Vision
@@ -34,17 +52,45 @@ not only:
 
 
 ContextRank AI is an autonomous AI recruiter that understands candidates like humans do.
+---
 
+# 🖥️ Platform Preview
+
+<img src="assets/hero.png"/><img src="assets/ranking.png"/>
 
 ---
 
-# 🏆 Contest Dataset Implementation
+---
 
-This project is built and tested on the provided:
 
-```
+# 🏆 Challenge Dataset Support
+
+
+Built for:
+
+
+
 100,000 Candidate Dataset
-```
+
+
+Dataset file:
+
+
+
+backend/data/raw/candidates.jsonl
+
+
+NOTE:
+
+The dataset is not included in this repository.
+
+Place the organizer-provided dataset inside:
+
+
+
+backend/data/raw/
+
+
 
 Pipeline:
 
@@ -245,6 +291,9 @@ AI understands:
  ]
 }
 ```
+# 🧠 ContextRank Intelligence Layer
+
+<img src="assets/ai-engine.png"/>
 
 
 ---
@@ -364,7 +413,7 @@ High Capability Score
 ⭐ Hidden Gem
 ```
 
-
+<img src="assets/hidden-gems.png"/>
 ---
 
 # 🤖 Recruiter Copilot
@@ -440,7 +489,7 @@ Latency      : 0.13 sec
 API Health   : PASS
 
 ```
-
+<img src="assets/analytics.png"/>
 
 ---
 
@@ -591,6 +640,55 @@ localhost:5173
 ---
 
 
+# 🧪 Testing
+
+Testing performed using:
+
+```
+
+pytest
+
+```
+
+Validated:
+
+✔ API loading
+
+✔ Ranking engine
+
+✔ CapabilityDNA
+
+✔ Submission format
+
+Result:
+<img src="assets/pytest.png"/>
+
+---
+📤 Submission Output
+
+Generated ranking files:
+
+
+backend/data/processed/
+
+submission.csv
+
+final_submission.csv
+
+
+# ✅ Project Status
+
+| Module                  | Status      |
+| ----------------------- | ----------- |
+| React Frontend          | ✅ Complete  |
+| FastAPI Backend         | ✅ Complete  |
+| AI Ranking Pipeline     | ✅ Complete  |
+| 100K Dataset Processing | ✅ Complete  |
+| API Integration         | ✅ Complete  |
+| Testing                 | ✅ Passed    |
+| Submission CSV          | ✅ Generated |
+
+---
 # 🏆 Why ContextRank Wins
 
 

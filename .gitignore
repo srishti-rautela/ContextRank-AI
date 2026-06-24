@@ -51,6 +51,9 @@ models/cache/
 
 *.bin
 
+# Dataset (do not upload)
+backend/data/raw/*.jsonl
+backend/data/raw/*.json
 
 # HuggingFace
 .huggingface/

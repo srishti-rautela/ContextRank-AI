@@ -16,7 +16,7 @@ from vector_store.faiss_engine import (
 
 print("Loading candidates...")
 
-candidates = load_challenge_candidates()
+candidates = get_candidates_cache()
 
 
 texts = [

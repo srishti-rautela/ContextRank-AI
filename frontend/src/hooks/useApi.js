@@ -1,12 +1,19 @@
-// src/hooks/useApi.js
+// =====================================================
+// ContextRank AI API Layer
+// Docker + Local compatible
+// =====================================================
 
 
-const API_URL = "http://127.0.0.1:8000"
+// Vite proxy handles routing:
+// Browser -> localhost:5173 -> backend:8000
+
+const API_URL="http://127.0.0.1:8000"
+
 
 
 
 // =====================================================
-// Common Request Handler
+// COMMON REQUEST HANDLER
 // =====================================================
 
 async function apiRequest(
@@ -15,26 +22,30 @@ async function apiRequest(
 ){
 
     const res = await fetch(
+
         `${API_URL}${endpoint}`,
+
         {
             headers:{
                 "Content-Type":"application/json"
             },
+
             ...options
         }
-    )
+
+    );
 
 
     if(!res.ok){
 
         throw new Error(
             `API Error ${res.status}`
-        )
+        );
 
     }
 
 
-    return await res.json()
+    return await res.json();
 
 }
 
@@ -44,19 +55,61 @@ async function apiRequest(
 
 
 
+
 // =====================================================
-// 🚀 100K Challenge Ranking Engine
-// Gemini + FAISS + MiniLM
+// SYSTEM STATUS
+// =====================================================
+
+
+export async function fetchSystemStatus(){
+
+
+    try{
+
+        return await apiRequest(
+            "/api/system-status"
+        );
+
+    }
+    catch(e){
+
+        return {
+
+            status:"offline",
+
+            gemini:false,
+
+            faiss:false
+
+        };
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================================
+// 🚀 MAIN 100K CHALLENGE RANKING
 // =====================================================
 
 
 export async function rankCandidates(
+
     jobDescription,
+
     topN=100
+
 ){
 
 
-    return apiRequest(
+    return await apiRequest(
 
         "/api/challenge-rank",
 
@@ -78,7 +131,7 @@ export async function rankCandidates(
 
         }
 
-    )
+    );
 
 }
 
@@ -88,20 +141,29 @@ export async function rankCandidates(
 
 
 
+
+
 // =====================================================
-// Custom JD Panel
+// CUSTOM JD SUPPORT
 // =====================================================
 
 
 export async function rankCustomJD(
+
     text,
+
     topN=100
+
 ){
 
+
     return rankCandidates(
+
         text,
+
         topN
-    )
+
+    );
 
 }
 
@@ -112,24 +174,22 @@ export async function rankCustomJD(
 
 
 
+
 // =====================================================
-// ⭐ Hidden Gems
+// ⭐ HIDDEN GEMS
 // =====================================================
 
 
-export async function fetchHiddenGems(
-    topN=100
-){
+export async function fetchHiddenGems(){
+
 
     try{
 
 
         const data =
         await apiRequest(
-
             "/api/challenge-gems"
-
-        )
+        );
 
 
         return {
@@ -141,20 +201,21 @@ export async function fetchHiddenGems(
             count:
             data.count || 0
 
-        }
-
+        };
 
 
     }
+
     catch(e){
 
 
         return {
 
             gems:[],
+
             count:0
 
-        }
+        };
 
     }
 
@@ -168,12 +229,14 @@ export async function fetchHiddenGems(
 
 
 
+
 // =====================================================
-// 📊 Analytics Dashboard
+// 📊 ANALYTICS
 // =====================================================
 
 
 export async function fetchAnalytics(){
+
 
     try{
 
@@ -182,10 +245,11 @@ export async function fetchAnalytics(){
 
             "/api/analytics"
 
-        )
+        );
 
 
     }
+
     catch(e){
 
 
@@ -204,10 +268,6 @@ export async function fetchAnalytics(){
             [],
 
 
-            top_cities:
-            [],
-
-
             tier_distribution:
             {},
 
@@ -218,10 +278,11 @@ export async function fetchAnalytics(){
 
             }
 
+        };
 
-        }
 
     }
+
 
 }
 
@@ -233,8 +294,9 @@ export async function fetchAnalytics(){
 
 
 
+
 // =====================================================
-// Stats Page compatibility
+// STATS COMPATIBILITY
 // =====================================================
 
 
@@ -242,7 +304,7 @@ export async function fetchStats(){
 
 
     const data =
-    await fetchAnalytics()
+    await fetchAnalytics();
 
 
 
@@ -254,11 +316,9 @@ export async function fetchStats(){
         data.total_candidates || 100000,
 
 
-
         hidden_gems:
 
         data.hidden_gems || 0,
-
 
 
         jobs:
@@ -266,24 +326,16 @@ export async function fetchStats(){
         10,
 
 
-
         bias_free:
 
         "100%",
-
-
-
-        engine:
-
-        data.ai_engine || {},
-
 
 
         status:
 
         "ACTIVE"
 
-    }
+    };
 
 
 }
@@ -296,68 +348,17 @@ export async function fetchStats(){
 
 
 
-
 // =====================================================
-// 🧠 AI System Status
-// =====================================================
-
-
-export async function getSystemStatus(){
-
-
-    try{
-
-
-        return await apiRequest(
-
-            "/api/system-status"
-
-        )
-
-
-    }
-    catch(e){
-
-
-        return {
-
-            gemini:false,
-
-            faiss:false,
-
-            status:"offline"
-
-        }
-
-    }
-
-}
-
-
-
-// old component support
-
-export const fetchSystemStatus =
-getSystemStatus
-
-
-
-
-
-
-
-
-
-
-
-// =====================================================
-// 🤖 Recruiter Copilot
+// 🤖 RECRUITER COPILOT
 // =====================================================
 
 
 export async function recruiterCopilot(
+
     jd,
+
     candidates
+
 ){
 
 
@@ -376,26 +377,28 @@ export async function recruiterCopilot(
                 body:JSON.stringify({
 
                     jd,
+
                     candidates
 
                 })
 
             }
 
-        )
+        );
+
 
     }
 
-
     catch(e){
+
 
         return {
 
             answer:
-
             "Recruiter AI unavailable"
 
-        }
+        };
+
 
     }
 
@@ -410,15 +413,20 @@ export async function recruiterCopilot(
 
 
 
+
 // =====================================================
-// ⚖ Candidate Compare
+// ⚖ COMPARE ENGINE
 // =====================================================
 
 
 export async function compareCandidates(
+
     candidateA,
+
     candidateB
+
 ){
+
 
 
     try{
@@ -446,10 +454,12 @@ export async function compareCandidates(
 
             }
 
-        )
+        );
 
 
     }
+
+
     catch(e){
 
 
@@ -460,7 +470,8 @@ export async function compareCandidates(
             reason:
             "Comparison unavailable"
 
-        }
+        };
+
 
     }
 
@@ -475,15 +486,17 @@ export async function compareCandidates(
 
 
 
-
 // =====================================================
-// Explain Comparison Page
+// EXPLAIN COMPARISON
 // =====================================================
 
 
 export async function explainComparison(
+
     candidateA,
+
     candidateB
+
 ){
 
 
@@ -502,7 +515,6 @@ export async function explainComparison(
 
                 body:JSON.stringify({
 
-
                     candidate_a:
                     candidateA,
 
@@ -510,13 +522,11 @@ export async function explainComparison(
                     candidate_b:
                     candidateB
 
-
                 })
 
             }
 
-        )
-
+        );
 
 
     }
@@ -525,19 +535,15 @@ export async function explainComparison(
     catch(e){
 
 
-
         return {
 
 
             winner:
-
             "AI unavailable",
 
 
             explanation:
-
             "Comparison engine offline",
-
 
 
             strengths_a:
@@ -547,7 +553,7 @@ export async function explainComparison(
             strengths_b:
             []
 
-        }
+        };
 
 
     }
@@ -563,14 +569,18 @@ export async function explainComparison(
 
 
 
+
 // =====================================================
-// 🚀 AI Engine Page
+// 🧠 AI ENGINE
 // =====================================================
 
 
 export async function analyzeJob(
+
     job
+
 ){
+
 
 
     try{
@@ -593,12 +603,13 @@ export async function analyzeJob(
 
             }
 
-        )
+        );
 
 
     }
-    catch(e){
 
+
+    catch(e){
 
 
         return {
@@ -620,8 +631,10 @@ export async function analyzeJob(
             "offline"
 
 
-        }
+        };
+
 
     }
+
 
 }

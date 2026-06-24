@@ -8,7 +8,7 @@ import os
 print("Loading candidates...")
 
 
-candidates = load_challenge_candidates()
+candidates = get_candidates_cache()
 
 
 print(

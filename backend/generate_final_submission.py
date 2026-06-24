@@ -10,7 +10,7 @@ import os
 print("Loading challenge dataset...")
 
 
-candidates = load_challenge_candidates()
+candidates = get_candidates_cache()
 
 
 print(
